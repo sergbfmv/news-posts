@@ -1,31 +1,16 @@
 import axios from 'axios'
 
-const API_KEY = 'AIzaSyChRwqJCQtni2qAT-qjtV0i4tWrISfVYq8'
-
 const instance = axios.create({
-  baseURL: 'https://www.googleapis.com/books/v1/volumes',
-  params: {
-    key: API_KEY,
-  },
+  baseURL: 'https://jsonplaceholder.typicode.com',
 })
 
-export const booksAPI = {
-  getBooks: (query: string, selectedCategory: string, sort: string) => {
-    return instance.get('/?', {
-      params: {
-        orderBy: sort,
-        q: query,
-        subject: selectedCategory !== 'all' ? selectedCategory : '',
-      },
-    })
+export const newsAPI = {
+  getPosts: () => {
+    return instance.get('/posts?_limit=10')
   },
-  loadBooks: (query: string, page: number) => {
-    return instance.get('/?', {
-      params: {
-        maxResults: 30,
-        q: query,
-        startIndex: (page - 1) * 30,
-      },
-    })
+  loadPosts: (page: number) => {
+    const startIndex = page * 10
+
+    return instance.get(`/posts?_start=${startIndex}&_limit=10`)
   },
 }
